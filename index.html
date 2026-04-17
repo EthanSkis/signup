@@ -780,6 +780,10 @@
 
           <div class="msg" id="codeMsg" role="status" aria-live="polite"></div>
 
+          <div class="foot-note" id="codeFootNote">
+            Don't have an access code? <a href="https://clearbot.io/book">Book intro</a>
+          </div>
+
           <div id="gated" hidden>
             <div class="field">
               <label for="email">
@@ -985,6 +989,7 @@
   const verifyText   = verifyBtn.querySelector('span');
   const gated        = document.getElementById('gated');
   const codeMsg      = document.getElementById('codeMsg');
+  const codeFootNote = document.getElementById('codeFootNote');
 
   function setMsg(text, kind) {
     msg.textContent = text || '';
@@ -1047,6 +1052,7 @@
       verifyText.textContent = 'Verified';
       setCodeMsg('Access code accepted.', 'ok');
       gated.hidden = false;
+      codeFootNote.hidden = true;
       emailEl.focus();
     } else {
       verifyBtn.removeAttribute('disabled');
