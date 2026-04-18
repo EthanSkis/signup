@@ -1046,13 +1046,14 @@
       return;
     }
 
-    if (data === true) {
+    if (data && data.valid === true) {
       accessCodeEl.setAttribute('disabled', 'true');
       verifyBtn.setAttribute('disabled', 'true');
       verifyText.textContent = 'Verified';
       setCodeMsg('Access code accepted.', 'ok');
       gated.hidden = false;
       codeFootNote.hidden = true;
+      setSignupTitleWelcome(data.name);
       emailEl.focus();
     } else {
       verifyBtn.removeAttribute('disabled');
@@ -1061,6 +1062,19 @@
       accessCodeEl.focus();
     }
   });
+
+  function setSignupTitleWelcome(name) {
+    const titleEl = document.getElementById('signup-title');
+    if (!titleEl) return;
+    const safeName = (name || '').toString().trim();
+    if (!safeName) return;
+    titleEl.replaceChildren();
+    const italic = document.createElement('span');
+    italic.className = 'italic';
+    italic.textContent = 'Welcome';
+    titleEl.appendChild(italic);
+    titleEl.appendChild(document.createTextNode(', ' + safeName + '.'));
+  }
 
   accessCodeEl.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
