@@ -307,6 +307,41 @@
     color: var(--ink);
   }
 
+  .invited-as {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: -22px 0 30px;
+    padding: 6px 12px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    background: rgba(243, 241, 234, 0.03);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-dim);
+  }
+  .invited-as strong {
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+  .invited-as[hidden] { display: none; }
+
+  #gated {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  #gated[hidden] { display: none; }
+  #gated.revealed {
+    animation: gatedReveal 0.45s var(--ease) both;
+  }
+  @keyframes gatedReveal {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   .form {
     display: flex;
     flex-direction: column;
@@ -741,7 +776,7 @@
           <span>Session · 01</span>
           <span class="status-tag">
             <span class="dot"></span>
-            Secure Channel
+            Encrypted
           </span>
         </div>
 
@@ -751,6 +786,9 @@
         <p class="subtitle">
           Join <em>ClearBot</em> and spin up your workspace.
         </p>
+        <div class="invited-as" id="invitedAs" hidden>
+          Invited as <strong data-invited-name></strong>
+        </div>
 
         <form class="form" id="signupForm" novalidate>
           <div class="field" id="accessCodeField">
@@ -1052,8 +1090,16 @@
       verifyText.textContent = 'Verified';
       setCodeMsg('Access code accepted.', 'ok');
       gated.hidden = false;
-      codeFootNote.hidden = true;
-      setSignupTitleWelcome(data.name);
+      // Re-trigger the reveal animation each time.
+      gated.classList.remove('revealed');
+      void gated.offsetWidth;
+      gated.classList.add('revealed');
+      // Keep the "no code?" fallback link visible in case the user decides
+      // this flow isn't right for them after seeing the rest of the form.
+      if (codeFootNote) codeFootNote.hidden = false;
+      showInvitedAs(data.name);
+      // Smoothly scroll the revealed section into view on small screens.
+      try { gated.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (_) {}
       emailEl.focus();
     } else {
       verifyBtn.removeAttribute('disabled');
@@ -1063,17 +1109,13 @@
     }
   });
 
-  function setSignupTitleWelcome(name) {
-    const titleEl = document.getElementById('signup-title');
-    if (!titleEl) return;
+  function showInvitedAs(name) {
+    const chip = document.getElementById('invitedAs');
+    const slot = chip && chip.querySelector('[data-invited-name]');
     const safeName = (name || '').toString().trim();
-    if (!safeName) return;
-    titleEl.replaceChildren();
-    const italic = document.createElement('span');
-    italic.className = 'italic';
-    italic.textContent = 'Welcome';
-    titleEl.appendChild(italic);
-    titleEl.appendChild(document.createTextNode(', ' + safeName + '.'));
+    if (!chip || !slot || !safeName) return;
+    slot.textContent = safeName;
+    chip.hidden = false;
   }
 
   accessCodeEl.addEventListener('keydown', (e) => {
@@ -1150,9 +1192,59 @@
     } else {
       submit.removeAttribute('disabled');
       submitText.textContent = 'Create Account';
-      setMsg('Check your inbox to confirm your email.', 'ok');
+      setMsg('Check your inbox (and spam) to confirm your email. The link expires in 24 hours.', 'ok');
+      showResendVerify(email);
     }
   });
+
+  function showResendVerify(email) {
+    let wrap = document.getElementById('resendWrap');
+    if (!wrap) {
+      wrap = document.createElement('div');
+      wrap.id = 'resendWrap';
+      wrap.className = 'foot-note';
+      wrap.style.marginTop = '12px';
+      wrap.innerHTML = 'Didn\u2019t get it? <a id="resendLink" href="#">Resend verification email</a>';
+      const msgEl = document.getElementById('statusMsg');
+      if (msgEl && msgEl.parentNode) {
+        msgEl.parentNode.insertBefore(wrap, msgEl.nextSibling);
+      }
+    }
+    const link = wrap.querySelector('#resendLink');
+    if (!link) return;
+    let cooling = false;
+    link.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (cooling) return;
+      cooling = true;
+      const prev = link.textContent;
+      link.textContent = 'Sending…';
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+        options: { emailRedirectTo: CLIENT_URL },
+      });
+      if (error) {
+        setMsg(error.message || 'Could not resend. Try again in a minute.', 'error');
+        link.textContent = prev;
+        cooling = false;
+        return;
+      }
+      setMsg('Another verification email is on its way.', 'ok');
+      let left = 30;
+      link.textContent = 'Resend again in ' + left + 's';
+      const tick = setInterval(() => {
+        left -= 1;
+        if (left <= 0) {
+          clearInterval(tick);
+          link.textContent = 'Resend verification email';
+          cooling = false;
+        } else {
+          link.textContent = 'Resend again in ' + left + 's';
+        }
+      }, 1000);
+    });
+  }
 
   ssoButtons.forEach((btn) => {
     btn.addEventListener('click', async () => {
