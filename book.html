@@ -862,7 +862,7 @@
           </div>
           <div class="bullet">
             <span class="k">You leave with</span>
-            <span class="v">Sample work</span>
+            <span class="v"><em>A plan</em> &amp; price</span>
           </div>
         </div>
 
@@ -965,7 +965,15 @@
 
 </div>
 
-<script>
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL      = 'https://qunobrixpnerocdntkio.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_P-w2YUP5j2PcUPJrqZ3Xxg_Wk0BqSRu';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
   const slotGrid = document.getElementById('slotGrid');
   const tzHint   = document.getElementById('tzHint');
   const form     = document.getElementById('bookForm');
@@ -1032,6 +1040,16 @@
     if (tz) tzHint.textContent = tz.replace(/_/g, ' ');
   } catch (_) {}
 
+  // Pre-select the "Looking for" dropdown from ?focus= so service cards on
+  // the marketing site can deep-link into a partially filled form.
+  try {
+    const focus = new URL(window.location.href).searchParams.get('focus');
+    const needSel = document.getElementById('need');
+    if (focus && needSel && [...needSel.options].some(o => o.value === focus)) {
+      needSel.value = focus;
+    }
+  } catch (_) {}
+
   renderSlots();
 
   function setMsg(text, kind) {
@@ -1040,7 +1058,30 @@
     if (kind) msg.classList.add(kind);
   }
 
-  form.addEventListener('submit', (e) => {
+  function renderConfirmation({ name, email, slotText }) {
+    const card = document.querySelector('.card');
+    if (!card) return;
+    const safeName  = name.replace(/[<>]/g, '');
+    const safeEmail = email.replace(/[<>]/g, '');
+    const safeSlot  = slotText.replace(/[<>]/g, '');
+    card.innerHTML = [
+      '<div class="card-head">',
+      '  <span>Intake · 01</span>',
+      '  <span class="status-tag"><span class="dot"></span>Received</span>',
+      '</div>',
+      '<h1 class="title"><span class="italic">Got it</span>, ' + safeName + '.</h1>',
+      '<p class="subtitle">We\u2019ll confirm your slot by email within one business day.</p>',
+      '<div class="bullets">',
+      '  <div class="bullet"><span class="k">Slot</span><span class="v">' + safeSlot + '</span></div>',
+      '  <div class="bullet"><span class="k">Reply to</span><span class="v">' + safeEmail + '</span></div>',
+      '  <div class="bullet"><span class="k">Next</span><span class="v"><em>Calendar invite</em></span></div>',
+      '</div>',
+      '<p class="subtitle" style="margin-bottom:10px;">Nothing else to do on your end. If your plans change, just reply to the confirmation email.</p>',
+      '<div class="foot-note">Have an access code already? <a href="/">Sign up</a></div>',
+    ].join('');
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     setMsg('');
 
@@ -1062,10 +1103,12 @@
     if (!consent) { setMsg('Please check the email consent box.', 'error'); return; }
 
     submit.setAttribute('disabled', 'true');
-    submitText.textContent = 'Opening email…';
+    submitText.textContent = 'Sending…';
 
     let slotText = slot;
+    let tz = null;
     try {
+      tz = Intl.DateTimeFormat().resolvedOptions().timeZone || null;
       const d = new Date(slot);
       slotText = d.toLocaleString(undefined, {
         weekday: 'short', month: 'short', day: 'numeric',
@@ -1074,25 +1117,27 @@
       });
     } catch (_) {}
 
-    const subject = `Intro call request — ${name}`;
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      company ? `Company: ${company}` : null,
-      `Looking for: ${need}`,
-      `Preferred time: ${slotText}`,
-      '',
-      notes ? `Notes:\n${notes}` : null,
-    ].filter(Boolean).join('\n');
+    const { error } = await supabase.from('booking_requests').insert({
+      name,
+      email,
+      company: company || null,
+      need,
+      preferred_slot: slot,
+      preferred_slot_label: slotText,
+      timezone: tz,
+      notes: notes || null,
+      consent_email: true,
+    });
 
-    const href = `mailto:ethan@clearbot.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = href;
-
-    setMsg('Opening your email client to confirm…', 'ok');
-    setTimeout(() => {
+    if (error) {
       submit.removeAttribute('disabled');
       submitText.textContent = 'Request intro call';
-    }, 1800);
+      setMsg(error.message || 'Could not send request. Please try again, or email ethan@clearbot.io.', 'error');
+      return;
+    }
+
+    setMsg('Request received — you\u2019ll hear back within one business day.', 'ok');
+    renderConfirmation({ name, email, slotText });
   });
 </script>
 
