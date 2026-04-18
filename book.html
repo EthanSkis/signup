@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sign Up — ClearBot</title>
-<meta name="description" content="Create your ClearBot account." />
+<title>Book intro — ClearBot</title>
+<meta name="description" content="Book a 30-minute intro call with ClearBot." />
 
 <link rel="icon" type="image/svg+xml" href="https://clearbot.io/assets/favicon.svg" />
 
@@ -194,15 +194,15 @@
   .stage {
     position: relative;
     width: 100%;
-    max-width: 460px;
+    max-width: 720px;
   }
 
   .ghost-logo {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 720px;
-    height: 720px;
+    width: 820px;
+    height: 820px;
     transform: translate(-50%, -50%);
     color: var(--ink);
     opacity: 0;
@@ -229,7 +229,7 @@
     background: linear-gradient(180deg, rgba(243, 241, 234, 0.025), rgba(243, 241, 234, 0.005));
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    padding: 44px 40px 36px;
+    padding: 44px 48px 40px;
     border-radius: 2px;
     animation: rise 1s var(--ease) 0.2s both;
   }
@@ -307,9 +307,51 @@
     color: var(--ink);
   }
 
+  .bullets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 34px;
+  }
+
+  .bullet {
+    border: 1px solid var(--rule);
+    background: rgba(243, 241, 234, 0.015);
+    padding: 14px 14px 12px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .bullet .k {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-dim);
+  }
+
+  .bullet .v {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .bullet .v em {
+    font-style: italic;
+  }
+
   .form {
     display: flex;
     flex-direction: column;
+    gap: 18px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 18px;
   }
 
@@ -329,15 +371,10 @@
     align-items: center;
   }
 
-  .field label a {
-    color: var(--ink-dim);
-    text-decoration: none;
+  .field label .hint {
+    color: var(--ink-faint);
     letter-spacing: 0.18em;
-    transition: color 0.2s var(--ease);
-    cursor: pointer;
   }
-
-  .field label a:hover { color: var(--accent); }
 
   .input-wrap {
     display: flex;
@@ -355,7 +392,9 @@
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
   }
 
-  .input-wrap input {
+  .input-wrap input,
+  .input-wrap select,
+  .input-wrap textarea {
     flex: 1;
     min-width: 0;
     background: transparent;
@@ -366,30 +405,107 @@
     font-family: var(--mono);
     font-size: 13px;
     letter-spacing: 0.02em;
+    resize: none;
   }
 
-  .input-wrap input::placeholder {
+  .input-wrap select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--ink-dim) 50%),
+      linear-gradient(135deg, var(--ink-dim) 50%, transparent 50%);
+    background-position:
+      calc(100% - 18px) 22px,
+      calc(100% - 13px) 22px;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 40px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 11px;
+  }
+
+  .input-wrap select option {
+    background: var(--bg-elev);
+    color: var(--ink);
+  }
+
+  .input-wrap textarea {
+    min-height: 96px;
+    line-height: 1.55;
+  }
+
+  .input-wrap input::placeholder,
+  .input-wrap textarea::placeholder {
     color: var(--ink-dim);
     text-transform: uppercase;
     letter-spacing: 0.14em;
     font-size: 11px;
   }
 
-  .input-wrap .toggle {
-    appearance: none;
-    border: 0;
-    background: transparent;
-    color: var(--ink-dim);
-    cursor: pointer;
-    padding: 0 14px;
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    transition: color 0.2s var(--ease);
+  .slot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
   }
 
-  .input-wrap .toggle:hover { color: var(--accent); }
+  .slot {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .slot input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .slot .slot-face {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 12px 14px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    background: rgba(243, 241, 234, 0.015);
+    transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
+  }
+
+  .slot .slot-day {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-dim);
+  }
+
+  .slot .slot-time {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .slot:hover .slot-face {
+    border-color: var(--accent-dim);
+    background: rgba(243, 241, 234, 0.04);
+  }
+
+  .slot input:checked + .slot-face {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .slot input:checked + .slot-face .slot-day,
+  .slot input:checked + .slot-face .slot-time {
+    color: #0a0b0d;
+  }
+
+  .slot input:focus-visible + .slot-face {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
 
   .row {
     display: flex;
@@ -485,64 +601,23 @@
     cursor: wait;
   }
 
-  .divider {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 14px;
-    margin: 26px 0 18px;
+  .section-label {
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.22em;
-    color: var(--ink-faint);
+    color: var(--ink-dim);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
   }
 
-  .divider::before,
-  .divider::after {
+  .section-label::after {
     content: "";
+    flex: 1;
     height: 1px;
     background: var(--rule);
   }
-
-  .sso {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .sso button {
-    appearance: none;
-    cursor: pointer;
-    background: rgba(243, 241, 234, 0.02);
-    border: 1px solid var(--rule-strong);
-    color: var(--ink);
-    padding: 12px 14px;
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    border-radius: 2px;
-    transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-width: 200px;
-  }
-
-  .sso button:hover {
-    background: rgba(243, 241, 234, 0.05);
-    border-color: var(--accent-dim);
-  }
-
-  .sso button:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  .sso button[disabled] { opacity: 0.6; cursor: wait; }
-
-  .sso svg { display: block; }
 
   .msg {
     margin-top: 14px;
@@ -678,13 +753,14 @@
     main { padding: 40px 0 32px; }
     .card { padding: 36px 26px 28px; }
     .ghost-logo { width: 520px; height: 520px; }
+    .bullets { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 480px) {
     .shell { padding: 18px 20px; }
     .card { padding: 30px 22px 24px; }
     h1.title { font-size: clamp(34px, 11vw, 46px); }
-    .sso button { min-width: 0; width: 100%; }
     footer.foot { grid-template-columns: 1fr; text-align: center; }
     footer.foot .right { justify-self: center; flex-wrap: wrap; justify-content: center; }
     .ghost-logo { width: 420px; height: 420px; }
@@ -718,7 +794,7 @@
         ClearBot
       </a>
       <span style="color: var(--ink-faint);">/</span>
-      <span>Secure access / Member sign-up</span>
+      <span>Intro call / Intake</span>
     </div>
 
     <div class="right">
@@ -735,139 +811,117 @@
     <div class="stage">
       <svg class="ghost-logo" aria-hidden="true"><use href="#clearbot-logo" /></svg>
 
-      <section class="card" aria-labelledby="signup-title">
+      <section class="card" aria-labelledby="book-title">
 
         <div class="card-head">
-          <span>Session · 01</span>
+          <span>Intake · 01</span>
           <span class="status-tag">
             <span class="dot"></span>
-            Secure Channel
+            Open for Bookings
           </span>
         </div>
 
-        <h1 class="title" id="signup-title">
-          <span class="italic">Create</span> account.
+        <h1 class="title" id="book-title">
+          <span class="italic">Book</span> intro.
         </h1>
         <p class="subtitle">
-          Join <em>ClearBot</em> and spin up your workspace.
+          A 30-minute call to see what <em>ClearBot</em> can make for you.
         </p>
 
-        <form class="form" id="signupForm" novalidate>
-          <div class="field" id="accessCodeField">
-            <label for="accessCode">
-              <span>Access code</span>
-            </label>
-            <div class="input-wrap">
-              <input
-                id="accessCode"
-                name="accessCode"
-                type="text"
-                placeholder="Enter your access code"
-                autocomplete="off"
-                autocapitalize="characters"
-                spellcheck="false"
-                required
-              />
+        <div class="bullets" aria-hidden="true">
+          <div class="bullet">
+            <span class="k">Runtime</span>
+            <span class="v"><em>30</em> min</span>
+          </div>
+          <div class="bullet">
+            <span class="k">Cost</span>
+            <span class="v"><em>Free</em></span>
+          </div>
+          <div class="bullet">
+            <span class="k">You leave with</span>
+            <span class="v">Sample work</span>
+          </div>
+        </div>
+
+        <form class="form" id="bookForm" novalidate>
+          <div class="section-label">Contact</div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="name"><span>Name</span></label>
+              <div class="input-wrap">
+                <input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="email"><span>Email</span></label>
+              <div class="input-wrap">
+                <input id="email" name="email" type="email" placeholder="your@email.com" autocomplete="email" required />
+              </div>
             </div>
           </div>
 
-          <button type="button" class="submit" id="verifyCodeBtn">
-            <span>Continue</span>
+          <div class="grid-2">
+            <div class="field">
+              <label for="company"><span>Company</span><span class="hint">Optional</span></label>
+              <div class="input-wrap">
+                <input id="company" name="company" type="text" placeholder="Company or project" autocomplete="organization" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="need"><span>Looking for</span></label>
+              <div class="input-wrap">
+                <select id="need" name="need" required>
+                  <option value="" disabled selected>Select focus</option>
+                  <option value="brand">Brand system</option>
+                  <option value="web">Website or landing page</option>
+                  <option value="ads">Ads &amp; campaigns</option>
+                  <option value="content">Content engine</option>
+                  <option value="video">Video &amp; motion</option>
+                  <option value="other">Something else</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-label">Pick a slot</div>
+
+          <div class="field">
+            <label><span>Preferred time</span><span class="hint" id="tzHint">Your local time</span></label>
+            <div class="slot-grid" id="slotGrid" role="radiogroup" aria-label="Preferred time"></div>
+          </div>
+
+          <div class="section-label">Brief</div>
+
+          <div class="field">
+            <label for="notes"><span>What do you need made?</span><span class="hint">Optional</span></label>
+            <div class="input-wrap">
+              <textarea id="notes" name="notes" placeholder="A few lines on the project, timeline, or budget."></textarea>
+            </div>
+          </div>
+
+          <div class="row">
+            <label class="check">
+              <input type="checkbox" id="consent" name="consent" required />
+              <span class="box" aria-hidden="true"></span>
+              <span>OK to email me call details</span>
+            </label>
+          </div>
+
+          <button type="submit" class="submit" id="submitBtn">
+            <span>Request intro call</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
 
-          <div class="msg" id="codeMsg" role="status" aria-live="polite"></div>
-
-          <div class="foot-note" id="codeFootNote">
-            Don't have an access code? <a href="/book">Book intro</a>
-          </div>
-
-          <div id="gated" hidden>
-            <div class="field">
-              <label for="email">
-                <span>Email</span>
-              </label>
-              <div class="input-wrap">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="your@email.com"
-                  autocomplete="email"
-                  required
-                />
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="password">
-                <span>Password</span>
-              </label>
-              <div class="input-wrap">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="••••••••••••"
-                  autocomplete="new-password"
-                  required
-                  minlength="8"
-                />
-                <button type="button" class="toggle" id="togglePw" aria-label="Show password">Show</button>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="confirm">
-                <span>Confirm password</span>
-              </label>
-              <div class="input-wrap">
-                <input
-                  id="confirm"
-                  name="confirm"
-                  type="password"
-                  placeholder="••••••••••••"
-                  autocomplete="new-password"
-                  required
-                  minlength="8"
-                />
-              </div>
-            </div>
-
-            <div class="row">
-              <label class="check">
-                <input type="checkbox" id="terms" name="terms" required />
-                <span class="box" aria-hidden="true"></span>
-                <span>I agree to the Terms &amp; Privacy</span>
-              </label>
-            </div>
-
-            <button type="submit" class="submit" id="submitBtn">
-              <span>Create Account</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-
-            <div class="msg" id="statusMsg" role="status" aria-live="polite"></div>
-
-            <div class="divider"><span>Or continue with</span></div>
-
-            <div class="sso">
-              <button type="button" data-provider="github">
-                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1-.02-1.96-3.2.69-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18.92-.26 1.9-.39 2.88-.39.98 0 1.96.13 2.88.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.67.79.55C20.22 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/>
-                </svg>
-                GitHub
-              </button>
-            </div>
-          </div>
+          <div class="msg" id="statusMsg" role="status" aria-live="polite"></div>
         </form>
 
         <div class="foot-note">
-          Already have an account? <a id="loginLink" href="https://login.clearbot.io">Sign in</a>
+          Have an access code already? <a href="/">Sign up</a>
         </div>
       </section>
     </div>
@@ -888,108 +942,74 @@
 
 </div>
 
-<script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+<script>
+  const slotGrid = document.getElementById('slotGrid');
+  const tzHint   = document.getElementById('tzHint');
+  const form     = document.getElementById('bookForm');
+  const submit   = document.getElementById('submitBtn');
+  const submitText = submit.querySelector('span');
+  const msg      = document.getElementById('statusMsg');
 
-  const SUPABASE_URL      = 'https://qunobrixpnerocdntkio.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_P-w2YUP5j2PcUPJrqZ3Xxg_Wk0BqSRu';
-  const CLIENT_URL        = 'https://client.clearbot.io';
+  const DAY_LABELS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const TIMES = [
+    { h: 10, m: 0 },
+    { h: 11, m: 30 },
+    { h: 14, m: 0 },
+    { h: 15, m: 30 },
+  ];
 
-  const COOKIE_DOMAIN    = '.clearbot.io';
-  const MAX_COOKIE_CHARS = 3500;
-
-  function writeCookie(name, value) {
-    document.cookie =
-      encodeURIComponent(name) + '=' + encodeURIComponent(value) +
-      '; Domain=' + COOKIE_DOMAIN +
-      '; Path=/; Max-Age=31536000; Secure; SameSite=Lax';
-  }
-  function deleteCookie(name) {
-    document.cookie =
-      encodeURIComponent(name) + '=' +
-      '; Domain=' + COOKIE_DOMAIN +
-      '; Path=/; Max-Age=0; Secure; SameSite=Lax';
-  }
-  function readCookie(name) {
-    const target = encodeURIComponent(name);
-    const parts = document.cookie ? document.cookie.split('; ') : [];
-    for (const p of parts) {
-      const eq = p.indexOf('=');
-      if (eq < 0) continue;
-      if (p.slice(0, eq) === target) return decodeURIComponent(p.slice(eq + 1));
-    }
-    return null;
-  }
-  function allCookieNames() {
-    const parts = document.cookie ? document.cookie.split('; ') : [];
-    const names = [];
-    for (const p of parts) {
-      const eq = p.indexOf('=');
-      if (eq < 0) continue;
-      try { names.push(decodeURIComponent(p.slice(0, eq))); }
-      catch (_) { names.push(p.slice(0, eq)); }
-    }
-    return names;
+  function formatTime(h, m) {
+    const suffix = h >= 12 ? 'PM' : 'AM';
+    const hh = ((h + 11) % 12) + 1;
+    return `${hh}:${String(m).padStart(2,'0')} ${suffix}`;
   }
 
-  const crossDomainCookieStorage = {
-    getItem(key) {
-      if (readCookie(key + '.0') != null) {
-        let result = '';
-        let i = 0;
-        let chunk;
-        while ((chunk = readCookie(key + '.' + i)) != null) {
-          result += chunk;
-          i++;
+  function generateSlots() {
+    const slots = [];
+    const now = new Date();
+    let added = 0;
+    let offset = 0;
+    while (added < 8 && offset < 30) {
+      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset);
+      const dow = d.getDay();
+      if (dow !== 0 && dow !== 6) {
+        for (const t of TIMES) {
+          if (added >= 8) break;
+          const dt = new Date(d.getFullYear(), d.getMonth(), d.getDate(), t.h, t.m);
+          if (dt.getTime() <= now.getTime() + 60 * 60 * 1000) continue;
+          slots.push({
+            iso: dt.toISOString(),
+            day: DAY_LABELS[dow],
+            date: `${dt.getMonth()+1}/${dt.getDate()}`,
+            time: formatTime(t.h, t.m),
+          });
+          added++;
         }
-        return result;
       }
-      return readCookie(key);
-    },
-    setItem(key, value) {
-      this.removeItem(key);
-      const s = String(value);
-      if (s.length <= MAX_COOKIE_CHARS) { writeCookie(key, s); return; }
-      let i = 0;
-      for (let off = 0; off < s.length; off += MAX_COOKIE_CHARS) {
-        writeCookie(key + '.' + i, s.slice(off, off + MAX_COOKIE_CHARS));
-        i++;
-      }
-    },
-    removeItem(key) {
-      deleteCookie(key);
-      for (const n of allCookieNames()) {
-        if (n.startsWith(key + '.')) deleteCookie(n);
-      }
-    },
-  };
+      offset++;
+    }
+    return slots;
+  }
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-      flowType: 'pkce',
-      storage: crossDomainCookieStorage,
-    },
-  });
+  function renderSlots() {
+    const slots = generateSlots();
+    slotGrid.innerHTML = slots.map((s, i) => `
+      <label class="slot">
+        <input type="radio" name="slot" value="${s.iso}" ${i === 0 ? 'required' : ''} />
+        <span class="slot-face">
+          <span class="slot-day">${s.day} · ${s.date}</span>
+          <span class="slot-time">${s.time}</span>
+        </span>
+      </label>
+    `).join('');
+  }
 
-  const form         = document.getElementById('signupForm');
-  const emailEl      = document.getElementById('email');
-  const pwEl         = document.getElementById('password');
-  const confirmEl    = document.getElementById('confirm');
-  const termsEl      = document.getElementById('terms');
-  const toggle       = document.getElementById('togglePw');
-  const submit       = document.getElementById('submitBtn');
-  const submitText   = submit.querySelector('span');
-  const msg          = document.getElementById('statusMsg');
-  const ssoButtons   = document.querySelectorAll('.sso button');
-  const accessCodeEl = document.getElementById('accessCode');
-  const verifyBtn    = document.getElementById('verifyCodeBtn');
-  const verifyText   = verifyBtn.querySelector('span');
-  const gated        = document.getElementById('gated');
-  const codeMsg      = document.getElementById('codeMsg');
-  const codeFootNote = document.getElementById('codeFootNote');
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (tz) tzHint.textContent = tz.replace(/_/g, ' ');
+  } catch (_) {}
+
+  renderSlots();
 
   function setMsg(text, kind) {
     msg.textContent = text || '';
@@ -997,167 +1017,59 @@
     if (kind) msg.classList.add(kind);
   }
 
-  function setCodeMsg(text, kind) {
-    codeMsg.textContent = text || '';
-    codeMsg.classList.remove('error', 'ok');
-    if (kind) codeMsg.classList.add(kind);
-  }
-
-  function goToClient() {
-    window.location.replace(CLIENT_URL);
-  }
-
-  (async () => {
-    const { data, error } = await supabase.auth.getSession();
-    if (error) {
-      console.warn('Session check failed:', error.message);
-      return;
-    }
-    if (data && data.session) {
-      setMsg('Session active — redirecting…', 'ok');
-      goToClient();
-    }
-  })();
-
-  supabase.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN' && session) {
-      goToClient();
-    }
-  });
-
-  verifyBtn.addEventListener('click', async () => {
-    setCodeMsg('');
-    const code = accessCodeEl.value.trim();
-    if (!code) {
-      setCodeMsg('Enter your access code.', 'error');
-      accessCodeEl.focus();
-      return;
-    }
-
-    verifyBtn.setAttribute('disabled', 'true');
-    verifyText.textContent = 'Checking…';
-
-    const { data, error } = await supabase.rpc('consume_access_code', { code_input: code });
-
-    if (error) {
-      verifyBtn.removeAttribute('disabled');
-      verifyText.textContent = 'Continue';
-      setCodeMsg(error.message || 'Could not verify code.', 'error');
-      return;
-    }
-
-    if (data === true) {
-      accessCodeEl.setAttribute('disabled', 'true');
-      verifyBtn.setAttribute('disabled', 'true');
-      verifyText.textContent = 'Verified';
-      setCodeMsg('Access code accepted.', 'ok');
-      gated.hidden = false;
-      codeFootNote.hidden = true;
-      emailEl.focus();
-    } else {
-      verifyBtn.removeAttribute('disabled');
-      verifyText.textContent = 'Continue';
-      setCodeMsg('Invalid access code.', 'error');
-      accessCodeEl.focus();
-    }
-  });
-
-  accessCodeEl.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      verifyBtn.click();
-    }
-  });
-
-  toggle.addEventListener('click', () => {
-    const isPw = pwEl.getAttribute('type') === 'password';
-    const newType = isPw ? 'text' : 'password';
-    pwEl.setAttribute('type', newType);
-    confirmEl.setAttribute('type', newType);
-    toggle.textContent = isPw ? 'Hide' : 'Show';
-    toggle.setAttribute('aria-label', isPw ? 'Hide password' : 'Show password');
-  });
-
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
     setMsg('');
 
-    if (gated.hidden) {
-      setCodeMsg('Enter a valid access code first.', 'error');
-      accessCodeEl.focus();
-      return;
-    }
+    const fd = new FormData(form);
+    const name    = (fd.get('name')    || '').toString().trim();
+    const email   = (fd.get('email')   || '').toString().trim();
+    const company = (fd.get('company') || '').toString().trim();
+    const need    = (fd.get('need')    || '').toString();
+    const slot    = (fd.get('slot')    || '').toString();
+    const notes   = (fd.get('notes')   || '').toString().trim();
+    const consent = fd.get('consent');
 
-    const email = emailEl.value.trim();
-    const password = pwEl.value;
-    const confirm = confirmEl.value;
-
+    if (!name) { setMsg('Enter your name.', 'error'); return; }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setMsg('Enter a valid email address.', 'error');
-      emailEl.focus();
-      return;
+      setMsg('Enter a valid email address.', 'error'); return;
     }
-    if (!password || password.length < 8) {
-      setMsg('Password must be at least 8 characters.', 'error');
-      pwEl.focus();
-      return;
-    }
-    if (password !== confirm) {
-      setMsg('Passwords do not match.', 'error');
-      confirmEl.focus();
-      return;
-    }
-    if (!termsEl.checked) {
-      setMsg('Please accept the Terms & Privacy to continue.', 'error');
-      termsEl.focus();
-      return;
-    }
+    if (!need) { setMsg('Pick what you are looking for.', 'error'); return; }
+    if (!slot) { setMsg('Pick a preferred time.', 'error'); return; }
+    if (!consent) { setMsg('Please check the email consent box.', 'error'); return; }
 
     submit.setAttribute('disabled', 'true');
-    submitText.textContent = 'Creating account…';
-    setMsg('Creating your account…');
+    submitText.textContent = 'Opening email…';
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { emailRedirectTo: CLIENT_URL },
-    });
-
-    if (error) {
-      submit.removeAttribute('disabled');
-      submitText.textContent = 'Create Account';
-      setMsg(error.message || 'Could not create account.', 'error');
-      return;
-    }
-
-    if (data && data.session) {
-      setMsg('Account created — redirecting…', 'ok');
-      goToClient();
-    } else {
-      submit.removeAttribute('disabled');
-      submitText.textContent = 'Create Account';
-      setMsg('Check your inbox to confirm your email.', 'ok');
-    }
-  });
-
-  ssoButtons.forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      const provider = btn.dataset.provider;
-      ssoButtons.forEach(b => b.setAttribute('disabled', 'true'));
-      setMsg(`Redirecting to ${provider}…`);
-
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: {
-          redirectTo: CLIENT_URL,
-        },
+    let slotText = slot;
+    try {
+      const d = new Date(slot);
+      slotText = d.toLocaleString(undefined, {
+        weekday: 'short', month: 'short', day: 'numeric',
+        hour: 'numeric', minute: '2-digit',
+        timeZoneName: 'short',
       });
+    } catch (_) {}
 
-      if (error) {
-        ssoButtons.forEach(b => b.removeAttribute('disabled'));
-        setMsg(error.message || `${provider} sign-up failed.`, 'error');
-      }
-    });
+    const subject = `Intro call request — ${name}`;
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      company ? `Company: ${company}` : null,
+      `Looking for: ${need}`,
+      `Preferred time: ${slotText}`,
+      '',
+      notes ? `Notes:\n${notes}` : null,
+    ].filter(Boolean).join('\n');
+
+    const href = `mailto:ethan@clearbot.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = href;
+
+    setMsg('Opening your email client to confirm…', 'ok');
+    setTimeout(() => {
+      submit.removeAttribute('disabled');
+      submitText.textContent = 'Request intro call';
+    }, 1800);
   });
 </script>
 
