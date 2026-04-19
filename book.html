@@ -88,688 +88,121 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
 
-  .shell {
-    position: relative;
-    z-index: 2;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 28px 40px;
-    max-width: 1400px;
-    width: 100%;
-    margin: 0 auto;
-  }
+  .shell { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; padding: 28px 40px; max-width: 1400px; width: 100%; margin: 0 auto; }
 
-  header.bar {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 24px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--ink-dim);
-    padding-bottom: 28px;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .bar .left, .bar .right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
+  header.bar { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 24px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-dim); padding-bottom: 28px; border-bottom: 1px solid var(--rule); }
+  .bar .left, .bar .right { display: flex; align-items: center; gap: 10px; }
   .bar .right { justify-content: flex-end; }
 
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--ink);
-    text-decoration: none;
-    padding: 8px 18px;
-    border: 1px solid var(--rule-strong);
-    border-radius: 999px;
-    background: rgba(243, 241, 234, 0.02);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
-  }
-
-  .back-btn:hover {
-    background: var(--accent);
-    color: #0a0b0d;
-    border-color: var(--accent);
-  }
-
-  .back-btn:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-  }
-
+  .back-btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink); text-decoration: none; padding: 8px 18px; border: 1px solid var(--rule-strong); border-radius: 999px; background: rgba(243, 241, 234, 0.02); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease); }
+  .back-btn:hover { background: var(--accent); color: #0a0b0d; border-color: var(--accent); }
+  .back-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .back-btn svg { transition: transform 0.25s var(--ease); }
   .back-btn:hover svg { transform: translateX(-3px); }
 
-  .mark {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--ink);
-    text-decoration: none;
-  }
-
+  .mark { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; }
   .mark svg { display: block; }
+  .mark-logo { color: var(--accent); filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.12)); }
 
-  .mark-logo {
-    color: var(--accent);
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.12));
-  }
+  .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px rgba(255, 255, 255, 0.35); animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
 
-  .dot {
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
-    animation: pulse 1.8s ease-in-out infinite;
-  }
+  main { flex: 1; display: grid; place-items: center; padding: 64px 0 48px; position: relative; }
+  .stage { position: relative; width: 100%; max-width: 720px; }
+  .ghost-logo { position: absolute; left: 50%; top: 50%; width: 820px; height: 820px; transform: translate(-50%, -50%); color: var(--ink); opacity: 0; pointer-events: none; z-index: 0; animation: ghostFade 2.4s var(--ease) 0.3s forwards, ghostDrift 14s ease-in-out 2.5s infinite alternate; }
+  @keyframes ghostFade { from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); } to { opacity: 0.035; transform: translate(-50%, -50%) scale(1); } }
+  @keyframes ghostDrift { 0% { transform: translate(-50%, -50%) translateX(0); opacity: 0.035; } 50% { transform: translate(-50%, -52%) translateX(-14px); opacity: 0.05; } 100% { transform: translate(-50%, -48%) translateX(10px); opacity: 0.03; } }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%      { opacity: 0.4; transform: scale(0.85); }
-  }
+  .card { position: relative; z-index: 1; border: 1px solid var(--rule-strong); background: linear-gradient(180deg, rgba(243, 241, 234, 0.025), rgba(243, 241, 234, 0.005)); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 44px 48px 40px; border-radius: 2px; animation: rise 1s var(--ease) 0.2s both; }
+  .card::before { content: ""; position: absolute; top: -1px; left: -1px; width: 14px; height: 14px; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); }
+  .card::after { content: ""; position: absolute; bottom: -1px; right: -1px; width: 14px; height: 14px; border-bottom: 1px solid var(--accent); border-right: 1px solid var(--accent); }
 
-  main {
-    flex: 1;
-    display: grid;
-    place-items: center;
-    padding: 64px 0 48px;
-    position: relative;
-  }
+  .card-head { display: flex; justify-content: space-between; align-items: center; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--ink-dim); margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1px dashed var(--rule); }
+  .card-head .status-tag { color: var(--accent); display: inline-flex; align-items: center; gap: 6px; }
+  .card-head .status-tag .dot { width: 5px; height: 5px; }
 
-  .stage {
-    position: relative;
-    width: 100%;
-    max-width: 720px;
-  }
+  h1.title { font-family: var(--display); font-weight: 400; font-size: clamp(40px, 6vw, 58px); line-height: 0.96; letter-spacing: -0.035em; color: var(--ink); margin-bottom: 14px; font-feature-settings: "ss01", "ss02"; }
+  h1.title .italic { font-style: italic; font-weight: 300; font-variation-settings: "opsz" 144, "SOFT" 100; }
 
-  .ghost-logo {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 820px;
-    height: 820px;
-    transform: translate(-50%, -50%);
-    color: var(--ink);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 0;
-    animation: ghostFade 2.4s var(--ease) 0.3s forwards, ghostDrift 14s ease-in-out 2.5s infinite alternate;
-  }
+  .subtitle { font-family: var(--display); font-weight: 300; font-size: 16px; line-height: 1.45; color: var(--ink-dim); margin-bottom: 36px; letter-spacing: -0.005em; }
+  .subtitle em { font-style: italic; color: var(--ink); }
 
-  @keyframes ghostFade {
-    from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
-    to   { opacity: 0.035; transform: translate(-50%, -50%) scale(1); }
-  }
+  .bullets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 34px; }
+  .bullet { border: 1px solid var(--rule); background: rgba(243, 241, 234, 0.015); padding: 14px 14px 12px; border-radius: 2px; display: flex; flex-direction: column; gap: 6px; }
+  .bullet .k { font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--ink-dim); }
+  .bullet .v { font-family: var(--display); font-weight: 300; font-size: 18px; letter-spacing: -0.01em; color: var(--ink); }
+  .bullet .v em { font-style: italic; }
 
-  @keyframes ghostDrift {
-    0%   { transform: translate(-50%, -50%) translateX(0);    opacity: 0.035; }
-    50%  { transform: translate(-50%, -52%) translateX(-14px); opacity: 0.05; }
-    100% { transform: translate(-50%, -48%) translateX(10px);  opacity: 0.03; }
-  }
+  .form { display: flex; flex-direction: column; gap: 18px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 
-  .card {
-    position: relative;
-    z-index: 1;
-    border: 1px solid var(--rule-strong);
-    background: linear-gradient(180deg, rgba(243, 241, 234, 0.025), rgba(243, 241, 234, 0.005));
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: 44px 48px 40px;
-    border-radius: 2px;
-    animation: rise 1s var(--ease) 0.2s both;
-  }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--ink-dim); display: flex; justify-content: space-between; align-items: center; }
+  .field label .hint { color: var(--ink-faint); letter-spacing: 0.18em; }
 
-  .card::before {
-    content: "";
-    position: absolute;
-    top: -1px; left: -1px;
-    width: 14px; height: 14px;
-    border-top: 1px solid var(--accent);
-    border-left: 1px solid var(--accent);
-  }
-  .card::after {
-    content: "";
-    position: absolute;
-    bottom: -1px; right: -1px;
-    width: 14px; height: 14px;
-    border-bottom: 1px solid var(--accent);
-    border-right: 1px solid var(--accent);
-  }
+  .input-wrap { display: flex; align-items: stretch; background: var(--bg-elev); border: 1px solid var(--rule-strong); border-radius: 2px; overflow: hidden; transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease); position: relative; }
+  .input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08); }
+  .input-wrap input, .input-wrap select, .input-wrap textarea { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; padding: 16px 18px; color: var(--ink); font-family: var(--mono); font-size: 13px; letter-spacing: 0.02em; resize: none; }
+  .input-wrap select { appearance: none; -webkit-appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--ink-dim) 50%), linear-gradient(135deg, var(--ink-dim) 50%, transparent 50%); background-position: calc(100% - 18px) 22px, calc(100% - 13px) 22px; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 40px; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; }
+  .input-wrap select option { background: var(--bg-elev); color: var(--ink); }
+  .input-wrap textarea { min-height: 96px; line-height: 1.55; }
+  .input-wrap input::placeholder, .input-wrap textarea::placeholder { color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; }
 
-  .card-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.22em;
-    color: var(--ink-dim);
-    margin-bottom: 28px;
-    padding-bottom: 14px;
-    border-bottom: 1px dashed var(--rule);
-  }
+  .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+  .slot { position: relative; cursor: pointer; }
+  .slot input { position: absolute; opacity: 0; pointer-events: none; }
+  .slot .slot-face { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 14px; border: 1px solid var(--rule-strong); border-radius: 2px; background: rgba(243, 241, 234, 0.015); transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease); }
+  .slot .slot-day { font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--ink-dim); }
+  .slot .slot-time { font-family: var(--display); font-weight: 300; font-size: 18px; letter-spacing: -0.01em; color: var(--ink); }
+  .slot:hover .slot-face { border-color: var(--accent-dim); background: rgba(243, 241, 234, 0.04); }
+  .slot input:checked + .slot-face { background: var(--accent); border-color: var(--accent); }
+  .slot input:checked + .slot-face .slot-day, .slot input:checked + .slot-face .slot-time { color: #0a0b0d; }
+  .slot input:focus-visible + .slot-face { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  .card-head .status-tag {
-    color: var(--accent);
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 4px; }
+  .check { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-dim); user-select: none; }
+  .check input { position: absolute; opacity: 0; pointer-events: none; }
+  .check .box { width: 14px; height: 14px; border: 1px solid var(--rule-strong); border-radius: 2px; position: relative; transition: background 0.2s var(--ease), border-color 0.2s var(--ease); flex-shrink: 0; }
+  .check input:checked + .box { background: var(--accent); border-color: var(--accent); }
+  .check input:checked + .box::after { content: ""; position: absolute; left: 3px; top: 1px; width: 4px; height: 7px; border: solid #0a0b0d; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); }
+  .check input:focus-visible + .box { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  .card-head .status-tag .dot {
-    width: 5px; height: 5px;
-  }
-
-  h1.title {
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: clamp(40px, 6vw, 58px);
-    line-height: 0.96;
-    letter-spacing: -0.035em;
-    color: var(--ink);
-    margin-bottom: 14px;
-    font-feature-settings: "ss01", "ss02";
-  }
-
-  h1.title .italic {
-    font-style: italic;
-    font-weight: 300;
-    font-variation-settings: "opsz" 144, "SOFT" 100;
-  }
-
-  .subtitle {
-    font-family: var(--display);
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 1.45;
-    color: var(--ink-dim);
-    margin-bottom: 36px;
-    letter-spacing: -0.005em;
-  }
-
-  .subtitle em {
-    font-style: italic;
-    color: var(--ink);
-  }
-
-  .bullets {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 34px;
-  }
-
-  .bullet {
-    border: 1px solid var(--rule);
-    background: rgba(243, 241, 234, 0.015);
-    padding: 14px 14px 12px;
-    border-radius: 2px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .bullet .k {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.22em;
-    color: var(--ink-dim);
-  }
-
-  .bullet .v {
-    font-family: var(--display);
-    font-weight: 300;
-    font-size: 18px;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-  }
-
-  .bullet .v em {
-    font-style: italic;
-  }
-
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-  }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .field label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.22em;
-    color: var(--ink-dim);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .field label .hint {
-    color: var(--ink-faint);
-    letter-spacing: 0.18em;
-  }
-
-  .input-wrap {
-    display: flex;
-    align-items: stretch;
-    background: var(--bg-elev);
-    border: 1px solid var(--rule-strong);
-    border-radius: 2px;
-    overflow: hidden;
-    transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
-    position: relative;
-  }
-
-  .input-wrap:focus-within {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
-  }
-
-  .input-wrap input,
-  .input-wrap select,
-  .input-wrap textarea {
-    flex: 1;
-    min-width: 0;
-    background: transparent;
-    border: 0;
-    outline: 0;
-    padding: 16px 18px;
-    color: var(--ink);
-    font-family: var(--mono);
-    font-size: 13px;
-    letter-spacing: 0.02em;
-    resize: none;
-  }
-
-  .input-wrap select {
-    appearance: none;
-    -webkit-appearance: none;
-    background-image:
-      linear-gradient(45deg, transparent 50%, var(--ink-dim) 50%),
-      linear-gradient(135deg, var(--ink-dim) 50%, transparent 50%);
-    background-position:
-      calc(100% - 18px) 22px,
-      calc(100% - 13px) 22px;
-    background-size: 5px 5px, 5px 5px;
-    background-repeat: no-repeat;
-    padding-right: 40px;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    font-size: 11px;
-  }
-
-  .input-wrap select option {
-    background: var(--bg-elev);
-    color: var(--ink);
-  }
-
-  .input-wrap textarea {
-    min-height: 96px;
-    line-height: 1.55;
-  }
-
-  .input-wrap input::placeholder,
-  .input-wrap textarea::placeholder {
-    color: var(--ink-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    font-size: 11px;
-  }
-
-  .slot-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
-  }
-
-  .slot {
-    position: relative;
-    cursor: pointer;
-  }
-
-  .slot input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .slot .slot-face {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    padding: 12px 14px;
-    border: 1px solid var(--rule-strong);
-    border-radius: 2px;
-    background: rgba(243, 241, 234, 0.015);
-    transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
-  }
-
-  .slot .slot-day {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.22em;
-    color: var(--ink-dim);
-  }
-
-  .slot .slot-time {
-    font-family: var(--display);
-    font-weight: 300;
-    font-size: 18px;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-  }
-
-  .slot:hover .slot-face {
-    border-color: var(--accent-dim);
-    background: rgba(243, 241, 234, 0.04);
-  }
-
-  .slot input:checked + .slot-face {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .slot input:checked + .slot-face .slot-day,
-  .slot input:checked + .slot-face .slot-time {
-    color: #0a0b0d;
-  }
-
-  .slot input:focus-visible + .slot-face {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-  }
-
-  .row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-top: 4px;
-  }
-
-  .check {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--ink-dim);
-    user-select: none;
-  }
-
-  .check input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .check .box {
-    width: 14px;
-    height: 14px;
-    border: 1px solid var(--rule-strong);
-    border-radius: 2px;
-    position: relative;
-    transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
-    flex-shrink: 0;
-  }
-
-  .check input:checked + .box {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .check input:checked + .box::after {
-    content: "";
-    position: absolute;
-    left: 3px; top: 1px;
-    width: 4px; height: 7px;
-    border: solid #0a0b0d;
-    border-width: 0 1.5px 1.5px 0;
-    transform: rotate(45deg);
-  }
-
-  .check input:focus-visible + .box {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  .submit {
-    appearance: none;
-    border: 0;
-    cursor: pointer;
-    background: var(--accent);
-    color: #0a0b0d;
-    padding: 0 22px;
-    font-family: var(--mono);
-    font-weight: 500;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    transition: background 0.2s var(--ease), transform 0.2s var(--ease);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    min-height: 52px;
-    margin-top: 10px;
-    border-radius: 2px;
-    width: 100%;
-  }
-
-  .submit:hover  { background: #f5f5f5; }
+  .submit { appearance: none; border: 0; cursor: pointer; background: var(--accent); color: #0a0b0d; padding: 0 22px; font-family: var(--mono); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; transition: background 0.2s var(--ease), transform 0.2s var(--ease); display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; margin-top: 10px; border-radius: 2px; width: 100%; }
+  .submit:hover { background: #f5f5f5; }
   .submit:active { transform: scale(0.99); }
-  .submit:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-  }
-
+  .submit:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .submit svg { transition: transform 0.25s var(--ease); }
   .submit:hover svg { transform: translateX(3px); }
+  .submit[disabled] { opacity: 0.6; cursor: wait; }
 
-  .submit[disabled] {
-    opacity: 0.6;
-    cursor: wait;
-  }
+  .section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--ink-dim); display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+  .section-label::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
 
-  .section-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.22em;
-    color: var(--ink-dim);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 6px;
-  }
-
-  .section-label::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--rule);
-  }
-
-  .msg {
-    margin-top: 14px;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--ink-dim);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 14px;
-  }
-
+  .msg { margin-top: 14px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-dim); display: flex; align-items: center; gap: 10px; min-height: 14px; }
   .msg.error { color: var(--danger); }
-  .msg.ok    { color: var(--accent); }
-
-  .msg::before {
-    content: "";
-    width: 18px;
-    height: 1px;
-    background: var(--ink-faint);
-    transition: background 0.2s var(--ease);
-  }
+  .msg.ok { color: var(--accent); }
+  .msg::before { content: ""; width: 18px; height: 1px; background: var(--ink-faint); transition: background 0.2s var(--ease); }
   .msg.error::before { background: var(--danger); }
-  .msg.ok::before    { background: var(--accent); }
+  .msg.ok::before { background: var(--accent); }
 
-  .foot-note {
-    margin-top: 24px;
-    text-align: center;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: var(--ink-dim);
-  }
+  .foot-note { margin-top: 24px; text-align: center; font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--ink-dim); }
+  .foot-note a { color: var(--ink); text-decoration: none; position: relative; transition: color 0.2s var(--ease); cursor: pointer; }
+  .foot-note a::after { content: ""; position: absolute; left: 0; bottom: -3px; width: 100%; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: right; transition: transform 0.3s var(--ease); }
+  .foot-note a:hover::after { transform: scaleX(1); transform-origin: left; }
 
-  .foot-note a {
-    color: var(--ink);
-    text-decoration: none;
-    position: relative;
-    transition: color 0.2s var(--ease);
-    cursor: pointer;
-  }
-
-  .foot-note a::after {
-    content: "";
-    position: absolute;
-    left: 0; bottom: -3px;
-    width: 100%; height: 1px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.3s var(--ease);
-  }
-
-  .foot-note a:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-
-  footer.foot {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: end;
-    gap: 24px;
-    padding-top: 28px;
-    border-top: 1px solid var(--rule);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--ink-dim);
-  }
-
+  footer.foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 24px; padding-top: 28px; border-top: 1px solid var(--rule); font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-dim); }
   footer.foot .right { justify-self: end; display: flex; gap: 22px; }
-
-  footer.foot a {
-    color: var(--ink-dim);
-    text-decoration: none;
-    position: relative;
-    transition: color 0.2s var(--ease);
-  }
-
+  footer.foot a { color: var(--ink-dim); text-decoration: none; position: relative; transition: color 0.2s var(--ease); }
   footer.foot a:hover { color: var(--ink); }
+  footer.foot a::after { content: ""; position: absolute; left: 0; bottom: -4px; width: 100%; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: right; transition: transform 0.3s var(--ease); }
+  footer.foot a:hover::after { transform: scaleX(1); transform-origin: left; }
 
-  footer.foot a::after {
-    content: "";
-    position: absolute;
-    left: 0; bottom: -4px;
-    width: 100%; height: 1px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.3s var(--ease);
-  }
+  .copyright { text-align: center; font-family: var(--display); font-style: italic; font-weight: 300; text-transform: none; letter-spacing: 0; font-size: 12px; color: var(--ink-dim); }
 
-  footer.foot a:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
+  @keyframes rise { 0% { opacity: 0; transform: translateY(26px); } 100% { opacity: 1; transform: translateY(0); } }
 
-  .copyright {
-    text-align: center;
-    font-family: var(--display);
-    font-style: italic;
-    font-weight: 300;
-    text-transform: none;
-    letter-spacing: 0;
-    font-size: 12px;
-    color: var(--ink-dim);
-  }
-
-  @keyframes rise {
-    0%   { opacity: 0; transform: translateY(26px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  .sprite {
-    position: absolute;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-  }
-
-  .sr-only {
-    position: absolute !important;
-    width: 1px; height: 1px;
-    padding: 0; margin: -1px;
-    overflow: hidden; clip: rect(0,0,0,0);
-    white-space: nowrap; border: 0;
-  }
-
-  @media (min-width: 900px) {
-    .shell          { padding: clamp(14px, 2vh, 28px) 40px; }
-    header.bar      { padding-bottom: clamp(14px, 2vh, 28px); }
-    main            { padding: clamp(16px, 3vh, 64px) 0 clamp(12px, 2vh, 48px); }
-    .card           { padding: clamp(22px, 3.4vh, 44px) 48px clamp(20px, 3vh, 40px); }
-    .card-head      { margin-bottom: clamp(12px, 2.2vh, 28px); padding-bottom: clamp(8px, 1.2vh, 14px); }
-    h1.title        { font-size: clamp(36px, 5.6vh, 58px); margin-bottom: clamp(8px, 1.2vh, 14px); }
-    .subtitle       { margin-bottom: clamp(14px, 2.6vh, 36px); }
-    .bullets        { margin-bottom: clamp(14px, 2.4vh, 34px); gap: clamp(10px, 1.2vh, 14px); }
-    .bullet         { padding: clamp(10px, 1.4vh, 14px) 14px clamp(8px, 1.1vh, 12px); }
-    .form           { gap: clamp(10px, 1.6vh, 18px); }
-    .grid-2         { gap: clamp(10px, 1.6vh, 18px); }
-    .input-wrap input,
-    .input-wrap select,
-    .input-wrap textarea { padding: clamp(10px, 1.4vh, 16px) 18px; }
-    .input-wrap textarea { min-height: clamp(56px, 9vh, 96px); }
-    .input-wrap select   { background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; }
-    .submit         { min-height: clamp(40px, 4.8vh, 52px); margin-top: clamp(4px, 0.8vh, 10px); }
-    .section-label  { margin-top: clamp(2px, 0.6vh, 6px); }
-    .foot-note      { margin-top: clamp(12px, 2vh, 24px); }
-    footer.foot     { padding-top: clamp(14px, 2vh, 28px); }
-  }
+  .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
   @media (max-width: 720px) {
     .shell { padding: 20px 24px; }
@@ -779,7 +212,6 @@
     .bullets { grid-template-columns: 1fr; }
     .grid-2 { grid-template-columns: 1fr; }
   }
-
   @media (max-width: 480px) {
     .shell { padding: 18px 20px; }
     .card { padding: 30px 22px 24px; }
@@ -788,21 +220,14 @@
     footer.foot .right { justify-self: center; flex-wrap: wrap; justify-content: center; }
     .ghost-logo { width: 420px; height: 420px; }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
 </style>
 </head>
 <body>
 
 <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
   <symbol id="clearbot-logo" viewBox="0 0 1008 1008">
-    <path fill="currentColor" fill-rule="evenodd" d="M 599.65 123.37 C 598.82 123.43, 554.92 123.57, 502.10 123.68 C 417.01 123.87, 405.24 123.98, 398.76 124.72 C 376.93 127.21, 352.85 132.01, 333.73 137.70 C 319.60 141.90, 298.89 148.98, 290.34 152.54 C 278.05 157.65, 268.81 162.12, 255.72 169.30 C 229.45 183.70, 213.95 193.68, 198.12 206.39 C 190.61 212.41, 177.54 223.81, 169.64 231.22 C 154.40 245.50, 137.45 264.55, 123.53 283.04 C 116.32 292.62, 111.23 300.34, 102.73 314.57 C 91.93 332.68, 85.06 345.81, 78.89 360.19 C 73.81 372.02, 64.09 400.35, 59.78 415.86 C 55.11 432.66, 51.06 453.06, 48.95 470.34 C 47.02 486.20, 46.29 498.27, 46.28 514.71 C 46.26 536.04, 47.50 555.88, 49.96 573.69 C 52.00 588.41, 57.08 610.96, 62.34 628.64 C 64.91 637.27, 75.58 667.56, 78.14 673.48 C 80.81 679.66, 88.82 696.02, 92.22 702.24 C 93.97 705.43, 100.14 715.64, 105.95 724.92 C 113.99 737.77, 118.41 744.23, 124.42 751.93 C 139.01 770.60, 147.66 780.28, 165.16 797.52 C 179.80 811.94, 186.39 817.82, 197.11 826.07 C 216.12 840.69, 224.56 846.65, 236.07 853.57 C 245.10 859.00, 265.88 869.74, 278.94 875.73 C 301.14 885.92, 323.45 893.70, 343.56 898.26 C 374.59 905.30, 390.98 908.08, 409.85 909.49 C 421.63 910.37, 468.59 910.39, 477.15 909.52 C 494.61 907.74, 514.81 904.40, 532.60 900.36 C 540.09 898.66, 548.14 896.72, 550.50 896.07 C 564.64 892.10, 586.08 884.39, 598.33 878.84 C 602.94 876.76, 614.53 871.11, 624.10 866.29 C 636.58 860.00, 644.35 855.71, 651.61 851.09 C 663.36 843.61, 672.27 837.43, 680.92 830.75 C 684.31 828.14, 689.53 824.14, 692.52 821.87 C 695.51 819.59, 699.54 816.33, 701.48 814.62 C 709.40 807.63, 738.66 778.17, 743.74 772.06 C 751.50 762.75, 767.16 741.76, 773.67 731.98 C 782.13 719.25, 786.91 710.93, 795.23 694.42 C 805.45 674.17, 810.28 662.98, 816.15 646.03 C 822.69 627.11, 828.67 601.95, 833.53 572.93 C 837.16 551.18, 837.95 532.54, 836.85 494.54 C 836.40 479.00, 835.82 473.02, 833.03 454.97 C 831.35 444.09, 825.10 414.08, 822.93 406.49 C 820.12 396.63, 814.12 379.24, 809.21 366.75 C 803.58 352.41, 802.23 348.51, 802.70 348.04 C 803.29 347.44, 856.08 346.90, 917.12 346.87 L 973.96 346.83 973.96 312.98 L 973.96 279.13 882.08 279.46 C 831.55 279.64, 717.05 279.84, 627.63 279.90 C 538.21 279.96, 455.64 280.17, 444.13 280.35 C 422.57 280.69, 413.04 281.35, 401.53 283.32 C 393.05 284.76, 368.44 290.92, 361.20 293.41 C 344.30 299.22, 326.86 308.06, 308.77 319.98 C 298.66 326.65, 293.04 330.81, 286.04 336.81 C 263.15 356.44, 245.10 379.00, 230.22 406.57 C 227.82 411.01, 224.51 417.75, 222.86 421.56 C 219.22 429.96, 211.49 453.25, 209.03 463.29 C 206.94 471.78, 205.60 479.28, 204.35 489.50 C 203.64 495.25, 203.45 500.58, 203.46 514.45 C 203.47 524.47, 203.74 534.93, 204.09 538.65 C 205.97 558.46, 209.85 575.75, 217.45 598.16 C 221.05 608.78, 224.12 615.91, 229.47 626.10 C 233.82 634.39, 236.53 638.76, 243.40 648.55 C 254.69 664.65, 258.96 669.86, 269.43 680.33 C 284.19 695.09, 298.77 707.36, 309.41 713.97 C 314.82 717.33, 328.52 724.87, 336.00 728.59 C 346.66 733.90, 358.53 738.76, 369.28 742.22 C 381.36 746.11, 389.51 748.08, 401.78 750.07 C 417.23 752.57, 420.78 752.81, 442.11 752.83 C 460.45 752.85, 463.38 752.74, 470.85 751.74 C 494.55 748.55, 510.42 744.63, 528.82 737.42 C 543.81 731.55, 563.23 721.48, 576.95 712.46 C 590.65 703.45, 596.49 698.58, 612.43 682.85 C 624.75 670.70, 630.22 664.56, 636.26 656.11 C 643.90 645.43, 651.70 632.18, 657.91 619.31 C 665.80 603.00, 670.17 590.93, 674.50 573.48 C 677.46 561.58, 679.23 551.51, 680.11 541.68 C 680.49 537.44, 680.74 526.57, 680.73 514.45 C 680.72 491.81, 680.42 488.42, 677.02 471.35 C 673.75 455.01, 669.98 442.92, 663.06 426.62 C 659.01 417.06, 654.04 407.27, 647.54 395.99 C 639.28 381.64, 632.66 372.39, 624.29 363.47 C 619.21 358.05, 614.35 352.50, 612.33 349.80 L 610.97 347.97 613.88 347.66 C 615.48 347.49, 640.97 347.20, 670.53 347.02 L 724.27 346.68 726.80 351.17 C 734.32 364.52, 745.67 389.72, 751.61 406.27 C 754.92 415.50, 757.22 423.50, 759.92 435.23 C 764.38 454.55, 767.36 471.98, 768.77 486.98 C 769.07 490.17, 769.45 499.92, 769.62 508.66 C 770.07 532.22, 768.96 548.38, 765.45 569.40 C 762.65 586.12, 757.99 606.07, 754.11 617.93 C 751.00 627.42, 745.67 640.88, 741.19 650.57 C 737.22 659.16, 727.57 677.62, 723.05 685.28 C 718.93 692.25, 709.10 706.53, 703.07 714.29 C 694.72 725.05, 683.98 737.19, 674.04 747.13 C 660.57 760.60, 647.11 772.00, 631.30 783.32 C 621.34 790.44, 617.23 793.06, 606.20 799.29 C 585.00 811.28, 569.45 818.64, 552.38 824.77 C 542.33 828.38, 539.00 829.39, 527.81 832.24 C 514.64 835.60, 503.13 838.03, 491.95 839.83 C 476.02 842.39, 472.03 842.64, 445.64 842.63 C 426.05 842.63, 419.29 842.45, 411.61 841.73 C 393.23 839.99, 380.86 837.88, 360.45 832.98 C 339.81 828.02, 330.35 824.81, 311.24 816.25 C 297.60 810.14, 290.67 806.62, 277.52 799.14 C 260.40 789.39, 253.72 784.69, 232.40 767.37 C 224.70 761.11, 218.49 755.48, 210.96 747.92 C 199.65 736.56, 187.40 723.20, 182.24 716.61 C 177.91 711.07, 161.25 686.20, 156.92 678.80 C 152.57 671.38, 145.68 657.93, 142.59 650.82 C 139.48 643.70, 135.08 632.17, 131.81 622.62 C 124.52 601.31, 120.97 586.56, 116.64 559.57 L 114.82 548.23 114.58 527.81 C 114.32 507.01, 114.78 494.01, 116.19 481.69 C 119.02 457.00, 122.94 439.15, 130.53 416.40 C 142.00 382.00, 152.76 360.27, 172.84 330.96 C 182.30 317.16, 193.86 303.34, 208.45 288.41 C 218.17 278.46, 227.40 270.08, 238.28 261.31 C 249.16 252.55, 250.87 251.30, 260.88 244.92 C 288.15 227.52, 303.85 219.48, 325.96 211.56 C 339.99 206.54, 356.92 201.21, 366.07 198.92 C 370.13 197.91, 379.55 195.82, 386.99 194.28 L 400.52 191.49 665.94 191.27 C 811.92 191.15, 940.95 190.91, 952.66 190.74 L 973.96 190.44 973.96 156.66 L 973.96 122.88 787.56 123.07 C 685.04 123.17, 600.48 123.31, 599.65 123.37 M 420.18 348.62 C 405.34 350.59, 382.83 356.97, 371.01 362.56 C 357.12 369.14, 340.90 379.87, 327.43 391.39 C 315.44 401.65, 298.51 423.16, 290.69 438.08 C 285.34 448.30, 279.77 463.32, 276.21 477.18 C 274.85 482.47, 273.40 489.05, 272.98 491.80 C 271.25 503.13, 271.55 531.90, 273.51 543.33 C 275.37 554.13, 279.42 568.64, 283.67 579.74 C 288.08 591.24, 293.96 602.34, 300.90 612.25 C 307.47 621.64, 320.75 636.45, 329.18 643.79 C 334.36 648.30, 346.03 656.48, 355.35 662.13 C 364.41 667.62, 377.83 673.83, 388.42 677.43 C 403.24 682.46, 419.22 685.24, 437.07 685.89 C 447.52 686.27, 464.03 685.49, 471.10 684.29 C 477.73 683.17, 485.70 681.01, 496.42 677.45 C 503.27 675.17, 508.46 673.02, 515.21 669.66 C 529.96 662.31, 543.10 653.95, 552.77 645.76 C 554.98 643.88, 560.78 638.29, 565.64 633.35 C 577.31 621.48, 584.10 612.40, 592.48 597.42 C 598.49 586.69, 602.76 576.66, 606.13 565.37 C 612.10 545.37, 614.04 529.07, 613.03 507.40 C 612.74 501.30, 612.16 494.17, 611.74 491.57 C 608.65 472.64, 604.22 459.62, 594.01 439.47 C 588.74 429.06, 581.62 417.86, 575.35 410.10 C 567.77 400.73, 551.43 385.69, 539.94 377.53 C 533.45 372.92, 522.50 366.39, 515.41 362.92 C 507.03 358.82, 493.16 354.30, 479.17 351.12 C 466.56 348.25, 461.83 347.84, 442.47 347.90 C 431.36 347.94, 423.43 348.19, 420.18 348.62" />
+    <path fill="currentColor" fill-rule="evenodd" d="M 599.65 123.37 C 598.82 123.43, 554.92 123.57, 502.10 123.68 C 417.01 123.87, 405.24 123.98, 398.76 124.72 C 376.93 127.21, 352.85 132.01, 333.73 137.70 C 319.60 141.90, 298.89 148.98, 290.34 152.54 C 278.05 157.65, 268.81 162.12, 255.72 169.30 C 229.45 183.70, 213.95 193.68, 198.12 206.39 C 190.61 212.41, 177.54 223.81, 169.64 231.22 C 154.40 245.50, 137.45 264.55, 123.53 283.04 C 116.32 292.62, 111.23 300.34, 102.73 314.57 C 91.93 332.68, 85.06 345.81, 78.89 360.19 C 73.81 372.02, 64.09 400.35, 59.78 415.86 C 55.11 432.66, 51.06 453.06, 48.95 470.34 C 47.02 486.20, 46.29 498.27, 46.28 514.71 C 46.26 536.04, 47.50 555.88, 49.96 573.69 C 52.00 588.41, 57.08 610.96, 62.34 628.64 C 64.91 637.27, 75.58 667.56, 78.14 673.48 C 80.81 679.66, 88.82 696.02, 92.22 702.24 C 93.97 705.43, 100.14 715.64, 105.95 724.92 C 113.99 737.77, 118.41 744.23, 124.42 751.93 C 139.01 770.60, 147.66 780.28, 165.16 797.52 C 179.80 811.94, 186.39 817.82, 197.11 826.07 C 216.12 840.69, 224.56 846.65, 236.07 853.57 C 245.10 859.00, 265.88 869.74, 278.94 875.73 C 301.14 885.92, 323.45 893.70, 343.56 898.26 C 374.59 905.30, 390.98 908.08, 409.85 909.49 C 421.63 910.37, 468.59 910.39, 477.15 909.52 C 494.61 907.74, 514.81 904.40, 532.60 900.36 C 540.09 898.66, 548.14 896.72, 550.50 896.07 C 564.64 892.10, 586.08 884.39, 598.33 878.84 C 602.94 876.76, 614.53 871.11, 624.10 866.29 C 636.58 860.00, 644.35 855.71, 651.61 851.09 C 663.36 843.61, 672.27 837.43, 680.92 830.75 C 684.31 828.14, 689.53 824.14, 692.52 821.87 C 695.51 819.59, 699.54 816.33, 701.48 814.62 C 709.40 807.63, 738.66 778.17, 743.74 772.06 C 751.50 762.75, 767.16 741.76, 773.67 731.98 C 782.13 719.25, 786.91 710.93, 795.23 694.42 C 805.45 674.17, 810.28 662.98, 816.15 646.03 C 822.69 627.11, 828.67 601.95, 833.53 572.93 C 837.16 551.18, 837.95 532.54, 836.85 494.54 C 836.40 479.00, 835.82 473.02, 833.03 454.97 C 831.35 444.09, 825.10 414.08, 822.93 406.49 C 820.12 396.63, 814.12 379.24, 809.21 366.75 C 803.58 352.41, 802.23 348.51, 802.70 348.04 C 803.29 347.44, 856.08 346.90, 917.12 346.87 L 973.96 346.83 973.96 312.98 L 973.96 279.13 882.08 279.46 C 831.55 279.64, 717.05 279.84, 627.63 279.90 Z" />
   </symbol>
 </svg>
 
@@ -819,12 +244,9 @@
       <span style="color: var(--ink-faint);">/</span>
       <span>Intro call / Intake</span>
     </div>
-
     <div class="right">
       <a class="back-btn" href="https://clearbot.io">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Back
       </a>
     </div>
@@ -835,94 +257,48 @@
       <svg class="ghost-logo" aria-hidden="true"><use href="#clearbot-logo" /></svg>
 
       <section class="card" aria-labelledby="book-title">
-
         <div class="card-head">
           <span>Intake · 01</span>
-          <span class="status-tag">
-            <span class="dot"></span>
-            Open for Bookings
-          </span>
+          <span class="status-tag"><span class="dot"></span>Open for Bookings</span>
         </div>
-
-        <h1 class="title" id="book-title">
-          <span class="italic">Book</span> intro.
-        </h1>
-        <p class="subtitle">
-          A 30-minute call to see what <em>ClearBot</em> can make for you.
-        </p>
+        <h1 class="title" id="book-title"><span class="italic">Book</span> intro.</h1>
+        <p class="subtitle">A 30-minute call to see what <em>ClearBot</em> can make for you.</p>
 
         <div class="bullets" aria-hidden="true">
-          <div class="bullet">
-            <span class="k">Runtime</span>
-            <span class="v"><em>30</em> min</span>
-          </div>
-          <div class="bullet">
-            <span class="k">Cost</span>
-            <span class="v"><em>Free</em></span>
-          </div>
-          <div class="bullet">
-            <span class="k">You leave with</span>
-            <span class="v">Sample work</span>
-          </div>
+          <div class="bullet"><span class="k">Runtime</span><span class="v"><em>30</em> min</span></div>
+          <div class="bullet"><span class="k">Cost</span><span class="v"><em>Free</em></span></div>
+          <div class="bullet"><span class="k">You leave with</span><span class="v">Sample work</span></div>
         </div>
 
         <form class="form" id="bookForm" novalidate>
           <div class="section-label">Contact</div>
-
           <div class="grid-2">
-            <div class="field">
-              <label for="name"><span>Name</span></label>
-              <div class="input-wrap">
-                <input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required />
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="email"><span>Email</span></label>
-              <div class="input-wrap">
-                <input id="email" name="email" type="email" placeholder="your@email.com" autocomplete="email" required />
-              </div>
-            </div>
+            <div class="field"><label for="name"><span>Name</span></label><div class="input-wrap"><input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required /></div></div>
+            <div class="field"><label for="email"><span>Email</span></label><div class="input-wrap"><input id="email" name="email" type="email" placeholder="your@email.com" autocomplete="email" required /></div></div>
           </div>
-
           <div class="grid-2">
-            <div class="field">
-              <label for="company"><span>Company</span><span class="hint">Optional</span></label>
-              <div class="input-wrap">
-                <input id="company" name="company" type="text" placeholder="Company or project" autocomplete="organization" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="need"><span>Looking for</span></label>
-              <div class="input-wrap">
-                <select id="need" name="need" required>
-                  <option value="" disabled selected>Select focus</option>
-                  <option value="brand">Brand system</option>
-                  <option value="web">Website or landing page</option>
-                  <option value="ads">Ads &amp; campaigns</option>
-                  <option value="content">Content engine</option>
-                  <option value="video">Video &amp; motion</option>
-                  <option value="other">Something else</option>
-                </select>
-              </div>
-            </div>
+            <div class="field"><label for="company"><span>Company</span><span class="hint">Optional</span></label><div class="input-wrap"><input id="company" name="company" type="text" placeholder="Company or project" autocomplete="organization" /></div></div>
+            <div class="field"><label for="need"><span>Looking for</span></label><div class="input-wrap"><select id="need" name="need" required>
+              <option value="" disabled selected>Select focus</option>
+              <option value="brand">Brand system</option>
+              <option value="web">Website or landing page</option>
+              <option value="ads">Ads &amp; campaigns</option>
+              <option value="content">Content engine</option>
+              <option value="video">Video &amp; motion</option>
+              <option value="other">Something else</option>
+            </select></div></div>
           </div>
 
           <div class="section-label">Pick a slot</div>
-
           <div class="field">
             <label><span>Preferred time</span><span class="hint" id="tzHint">Your local time</span></label>
             <div class="slot-grid" id="slotGrid" role="radiogroup" aria-label="Preferred time"></div>
           </div>
 
           <div class="section-label">Brief</div>
-
           <div class="field">
             <label for="notes"><span>What do you need made?</span><span class="hint">Optional</span></label>
-            <div class="input-wrap">
-              <textarea id="notes" name="notes" placeholder="A few lines on the project, timeline, or budget."></textarea>
-            </div>
+            <div class="input-wrap"><textarea id="notes" name="notes" placeholder="A few lines on the project, timeline, or budget."></textarea></div>
           </div>
 
           <div class="row">
@@ -935,25 +311,19 @@
 
           <button type="submit" class="submit" id="submitBtn">
             <span>Request intro call</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
 
           <div class="msg" id="statusMsg" role="status" aria-live="polite"></div>
         </form>
 
-        <div class="foot-note">
-          Have an access code already? <a href="/">Sign up</a>
-        </div>
+        <div class="foot-note">Have an access code already? <a href="/">Sign up</a></div>
       </section>
     </div>
   </main>
 
   <footer class="foot">
-    <div class="left">
-      <span>© 2026 ClearBot Systems</span>
-    </div>
+    <div class="left"><span>© 2026 ClearBot Systems</span></div>
     <div class="copyright">Clear workflows. Clear results.</div>
     <div class="right">
       <a href="https://clearbot.io">Home</a>
@@ -962,24 +332,25 @@
       <a href="/terms">Terms</a>
     </div>
   </footer>
-
 </div>
 
-<script>
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL      = 'https://qunobrixpnerocdntkio.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_P-w2YUP5j2PcUPJrqZ3Xxg_Wk0BqSRu';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false } });
+
   const slotGrid = document.getElementById('slotGrid');
   const tzHint   = document.getElementById('tzHint');
   const form     = document.getElementById('bookForm');
   const submit   = document.getElementById('submitBtn');
   const submitText = submit.querySelector('span');
   const msg      = document.getElementById('statusMsg');
+  const card     = document.querySelector('.card');
 
   const DAY_LABELS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const TIMES = [
-    { h: 10, m: 0 },
-    { h: 11, m: 30 },
-    { h: 14, m: 0 },
-    { h: 15, m: 30 },
-  ];
+  const TIMES = [{ h: 10, m: 0 }, { h: 11, m: 30 }, { h: 14, m: 0 }, { h: 15, m: 30 }];
 
   function formatTime(h, m) {
     const suffix = h >= 12 ? 'PM' : 'AM';
@@ -990,8 +361,7 @@
   function generateSlots() {
     const slots = [];
     const now = new Date();
-    let added = 0;
-    let offset = 0;
+    let added = 0, offset = 0;
     while (added < 8 && offset < 30) {
       const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset);
       const dow = d.getDay();
@@ -1000,12 +370,7 @@
           if (added >= 8) break;
           const dt = new Date(d.getFullYear(), d.getMonth(), d.getDate(), t.h, t.m);
           if (dt.getTime() <= now.getTime() + 60 * 60 * 1000) continue;
-          slots.push({
-            iso: dt.toISOString(),
-            day: DAY_LABELS[dow],
-            date: `${dt.getMonth()+1}/${dt.getDate()}`,
-            time: formatTime(t.h, t.m),
-          });
+          slots.push({ iso: dt.toISOString(), day: DAY_LABELS[dow], date: `${dt.getMonth()+1}/${dt.getDate()}`, time: formatTime(t.h, t.m) });
           added++;
         }
       }
@@ -1027,12 +392,23 @@
     `).join('');
   }
 
+  let userTz = null;
   try {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (tz) tzHint.textContent = tz.replace(/_/g, ' ');
+    userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (userTz) tzHint.textContent = userTz.replace(/_/g, ' ');
   } catch (_) {}
 
   renderSlots();
+
+  // If the marketing site sent us here with a service focus, preselect it.
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const focus = params.get('focus');
+    const needEl = document.getElementById('need');
+    if (focus && needEl && Array.from(needEl.options).some(o => o.value === focus)) {
+      needEl.value = focus;
+    }
+  } catch (_) {}
 
   function setMsg(text, kind) {
     msg.textContent = text || '';
@@ -1040,10 +416,26 @@
     if (kind) msg.classList.add(kind);
   }
 
-  form.addEventListener('submit', (e) => {
+  function renderSuccess(name, slotText) {
+    if (!card) return;
+    card.innerHTML =
+      '<div class="card-head">' +
+        '<span>Intake · 02</span>' +
+        '<span class="status-tag"><span class="dot"></span>Request received</span>' +
+      '</div>' +
+      '<h1 class="title"><span class="italic">Thanks</span>' + (name ? ', ' + name.split(/\s+/)[0] : '') + '.</h1>' +
+      '<p class="subtitle">We’ll confirm your intro call by <em>email</em> within one business day.</p>' +
+      '<div class="bullets">' +
+        '<div class="bullet"><span class="k">Requested slot</span><span class="v" style="font-size:15px;">' + (slotText || '—') + '</span></div>' +
+        '<div class="bullet"><span class="k">What happens next</span><span class="v" style="font-size:15px;">Calendar invite + brief</span></div>' +
+        '<div class="bullet"><span class="k">Need to change it?</span><span class="v" style="font-size:15px;">Reply to the confirmation email</span></div>' +
+      '</div>' +
+      '<div class="foot-note">Have an access code already? <a href="/">Sign up</a></div>';
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     setMsg('');
-
     const fd = new FormData(form);
     const name    = (fd.get('name')    || '').toString().trim();
     const email   = (fd.get('email')   || '').toString().trim();
@@ -1054,45 +446,47 @@
     const consent = fd.get('consent');
 
     if (!name) { setMsg('Enter your name.', 'error'); return; }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setMsg('Enter a valid email address.', 'error'); return;
-    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setMsg('Enter a valid email address.', 'error'); return; }
     if (!need) { setMsg('Pick what you are looking for.', 'error'); return; }
     if (!slot) { setMsg('Pick a preferred time.', 'error'); return; }
     if (!consent) { setMsg('Please check the email consent box.', 'error'); return; }
 
     submit.setAttribute('disabled', 'true');
-    submitText.textContent = 'Opening email…';
+    submitText.textContent = 'Submitting…';
+    setMsg('Sending your request…');
 
     let slotText = slot;
     try {
       const d = new Date(slot);
       slotText = d.toLocaleString(undefined, {
         weekday: 'short', month: 'short', day: 'numeric',
-        hour: 'numeric', minute: '2-digit',
-        timeZoneName: 'short',
+        hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
       });
     } catch (_) {}
 
-    const subject = `Intro call request — ${name}`;
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      company ? `Company: ${company}` : null,
-      `Looking for: ${need}`,
-      `Preferred time: ${slotText}`,
-      '',
-      notes ? `Notes:\n${notes}` : null,
-    ].filter(Boolean).join('\n');
+    // Record the booking in Supabase. The `booking_requests` table is
+    // expected to have an RLS policy that allows anonymous inserts
+    // (public booking form) and a DB trigger that notifies ethan@clearbot.io.
+    const { error } = await supabase.from('booking_requests').insert({
+      name, email,
+      company: company || null,
+      focus: need,
+      preferred_slot: slot,
+      preferred_slot_label: slotText,
+      timezone: userTz,
+      notes: notes || null,
+      source: 'signup.clearbot.io/book',
+    });
 
-    const href = `mailto:ethan@clearbot.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = href;
-
-    setMsg('Opening your email client to confirm…', 'ok');
-    setTimeout(() => {
+    if (error) {
       submit.removeAttribute('disabled');
       submitText.textContent = 'Request intro call';
-    }, 1800);
+      setMsg('Could not send your request: ' + (error.message || 'unknown error') + '. Email ethan@clearbot.io if this persists.', 'error');
+      return;
+    }
+
+    setMsg('Request received.', 'ok');
+    renderSuccess(name, slotText);
   });
 </script>
 

@@ -658,6 +658,73 @@
     100% { opacity: 1; transform: translateY(0); }
   }
 
+  #gated {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  #gated[hidden] { display: none; }
+
+  #gated.is-revealed {
+    animation: stageIn 0.55s var(--ease) both;
+  }
+
+  @keyframes stageIn {
+    0%   { opacity: 0; transform: translateY(14px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .invited-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-dim);
+    padding: 6px 12px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    background: rgba(243, 241, 234, 0.03);
+  }
+  .invited-chip strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .success-note {
+    margin-top: 18px;
+    padding: 14px 16px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    background: rgba(243, 241, 234, 0.03);
+    font-size: 11px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+  }
+  .success-note strong { color: var(--ink); font-weight: 500; }
+  .success-note[hidden] { display: none; }
+
+  .linkish {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .linkish:hover { color: var(--accent); }
+  .linkish[disabled] { opacity: 0.5; cursor: default; text-decoration: none; }
+
   .sprite {
     position: absolute;
     width: 0;
@@ -739,9 +806,9 @@
 
         <div class="card-head">
           <span>Session · 01</span>
-          <span class="status-tag">
+          <span class="status-tag" title="Your password is sent over an encrypted HTTPS connection.">
             <span class="dot"></span>
-            Secure Channel
+            Encrypted · HTTPS
           </span>
         </div>
 
@@ -751,6 +818,11 @@
         <p class="subtitle">
           Join <em>ClearBot</em> and spin up your workspace.
         </p>
+
+        <div id="invitedChip" class="invited-chip" hidden>
+          <span>Invited as</span>
+          <strong id="invitedName"></strong>
+        </div>
 
         <form class="form" id="signupForm" novalidate>
           <div class="field" id="accessCodeField">
@@ -852,6 +924,13 @@
             </button>
 
             <div class="msg" id="statusMsg" role="status" aria-live="polite"></div>
+
+            <div class="success-note" id="verifyNote" hidden>
+              <strong>Check your inbox.</strong> We sent a confirmation link to the email above. The link expires in 24 hours — if it's not in your inbox, check spam. Didn't get it?
+              <div style="margin-top:10px;">
+                <button type="button" class="linkish" id="resendBtn">Resend verification email</button>
+              </div>
+            </div>
 
             <div class="divider"><span>Or continue with</span></div>
 
@@ -1052,9 +1131,16 @@
       verifyText.textContent = 'Verified';
       setCodeMsg('Access code accepted.', 'ok');
       gated.hidden = false;
-      codeFootNote.hidden = true;
-      setSignupTitleWelcome(data.name);
-      emailEl.focus();
+      // Keep the "I don't have a code" link visible — even after verify —
+      // so a user who typed the wrong code still has an obvious escape hatch.
+      showInvitedAs(data.name);
+      // Reveal stage 2 with a visible fade + smooth scroll so users don't
+      // miss the form that appeared below.
+      requestAnimationFrame(() => {
+        gated.classList.add('is-revealed');
+        gated.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        emailEl.focus({ preventScroll: true });
+      });
     } else {
       verifyBtn.removeAttribute('disabled');
       verifyText.textContent = 'Continue';
@@ -1063,17 +1149,16 @@
     }
   });
 
-  function setSignupTitleWelcome(name) {
-    const titleEl = document.getElementById('signup-title');
-    if (!titleEl) return;
+  function showInvitedAs(name) {
     const safeName = (name || '').toString().trim();
-    if (!safeName) return;
-    titleEl.replaceChildren();
-    const italic = document.createElement('span');
-    italic.className = 'italic';
-    italic.textContent = 'Welcome';
-    titleEl.appendChild(italic);
-    titleEl.appendChild(document.createTextNode(', ' + safeName + '.'));
+    const chip = document.getElementById('invitedChip');
+    const nameEl = document.getElementById('invitedName');
+    if (!chip || !nameEl) return;
+    if (!safeName) { chip.hidden = true; return; }
+    // Show the invited name as a small hint, not as the page title —
+    // the code owner and the person signing up may be different people.
+    nameEl.textContent = safeName;
+    chip.hidden = false;
   }
 
   accessCodeEl.addEventListener('keydown', (e) => {
@@ -1151,8 +1236,37 @@
       submit.removeAttribute('disabled');
       submitText.textContent = 'Create Account';
       setMsg('Check your inbox to confirm your email.', 'ok');
+      const note = document.getElementById('verifyNote');
+      if (note) note.hidden = false;
     }
   });
+
+  const resendBtn = document.getElementById('resendBtn');
+  if (resendBtn) {
+    resendBtn.addEventListener('click', async () => {
+      const email = emailEl.value.trim();
+      if (!email) { setMsg('Enter your email above, then click resend.', 'error'); return; }
+      resendBtn.setAttribute('disabled', 'true');
+      resendBtn.textContent = 'Sending…';
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+        options: { emailRedirectTo: CLIENT_URL },
+      });
+      if (error) {
+        resendBtn.removeAttribute('disabled');
+        resendBtn.textContent = 'Resend verification email';
+        setMsg(error.message || 'Could not resend link.', 'error');
+        return;
+      }
+      resendBtn.textContent = 'Sent — check your inbox';
+      setMsg('A new confirmation link is on its way.', 'ok');
+      setTimeout(() => {
+        resendBtn.removeAttribute('disabled');
+        resendBtn.textContent = 'Resend verification email';
+      }, 30000);
+    });
+  }
 
   ssoButtons.forEach((btn) => {
     btn.addEventListener('click', async () => {
