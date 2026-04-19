@@ -189,12 +189,12 @@
   .input-wrap textarea { min-height: clamp(56px, 9vh, 96px); line-height: 1.55; }
   .input-wrap input::placeholder, .input-wrap textarea::placeholder { color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; }
 
-  .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: clamp(6px, 1vh, 10px); }
+  .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: clamp(6px, 1vh, 10px); min-height: clamp(72px, 9.5vh, 96px); align-content: start; }
   .slot { position: relative; cursor: pointer; }
   .slot input { position: absolute; opacity: 0; pointer-events: none; }
-  .slot .slot-face { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: clamp(8px, 1.2vh, 12px) 14px; border: 1px solid var(--rule-strong); border-radius: 2px; background: rgba(243, 241, 234, 0.015); transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease); }
+  .slot .slot-face { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: clamp(6px, 1vh, 12px) 12px; border: 1px solid var(--rule-strong); border-radius: 2px; background: rgba(243, 241, 234, 0.015); transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease); }
   .slot .slot-day { font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--ink-dim); }
-  .slot .slot-time { font-family: var(--display); font-weight: 300; font-size: clamp(15px, 2vh, 18px); letter-spacing: -0.01em; color: var(--ink); }
+  .slot .slot-time { font-family: var(--display); font-weight: 300; font-size: clamp(14px, 1.8vh, 17px); letter-spacing: -0.01em; color: var(--ink); line-height: 1.15; }
   .slot:hover .slot-face { border-color: var(--accent-dim); background: rgba(243, 241, 234, 0.04); }
   .slot input:checked + .slot-face { background: var(--accent); border-color: var(--accent); }
   .slot input:checked + .slot-face .slot-day, .slot input:checked + .slot-face .slot-time { color: #0a0b0d; }
@@ -264,6 +264,11 @@
   @media (max-height: 900px) {
     .bullets { display: none; }
     .input-wrap textarea { min-height: 64px; }
+  }
+  @media (max-height: 820px) {
+    .slot-grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); min-height: 0; }
+    .slot .slot-face { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 6px; padding: 7px 10px; }
+    .slot .slot-time { font-size: 14px; }
   }
   @media (max-height: 760px) {
     .input-wrap textarea { min-height: 52px; }
