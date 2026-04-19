@@ -155,12 +155,12 @@
 
   main { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: clamp(12px, 2.5vh, 48px) 0 clamp(10px, 2vh, 32px); position: relative; }
   .stage { position: relative; width: 100%; max-width: 720px; max-height: 100%; display: flex; }
+  @media (min-width: 900px) { .stage { max-width: 880px; } }
   .ghost-logo { position: absolute; left: 50%; top: 50%; width: 820px; height: 820px; transform: translate(-50%, -50%); color: var(--ink); opacity: 0; pointer-events: none; z-index: 0; animation: ghostFade 2.4s var(--ease) 0.3s forwards, ghostDrift 14s ease-in-out 2.5s infinite alternate; }
   @keyframes ghostFade { from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); } to { opacity: 0.035; transform: translate(-50%, -50%) scale(1); } }
   @keyframes ghostDrift { 0% { transform: translate(-50%, -50%) translateX(0); opacity: 0.035; } 50% { transform: translate(-50%, -52%) translateX(-14px); opacity: 0.05; } 100% { transform: translate(-50%, -48%) translateX(10px); opacity: 0.03; } }
 
-  .card { position: relative; z-index: 1; width: 100%; max-height: 100%; min-height: 0; border: 1px solid var(--rule-strong); background: linear-gradient(180deg, rgba(243, 241, 234, 0.025), rgba(243, 241, 234, 0.005)); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: clamp(16px, 3vh, 40px) clamp(24px, 4vw, 48px) clamp(14px, 2.5vh, 36px); border-radius: 2px; animation: rise 1s var(--ease) 0.2s both; overflow-y: auto; scrollbar-width: thin; }
-  .card::-webkit-scrollbar { width: 6px; }
+  .card { position: relative; z-index: 1; display: flex; flex-direction: column; width: 100%; max-height: 100%; min-height: 0; border: 1px solid var(--rule-strong); background: linear-gradient(180deg, rgba(243, 241, 234, 0.025), rgba(243, 241, 234, 0.005)); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: clamp(16px, 3vh, 40px) clamp(24px, 4vw, 48px) clamp(14px, 2.5vh, 36px); border-radius: 2px; animation: rise 1s var(--ease) 0.2s both; overflow: hidden; }
   .card::before { content: ""; position: absolute; top: -1px; left: -1px; width: 14px; height: 14px; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); }
   .card::after { content: ""; position: absolute; bottom: -1px; right: -1px; width: 14px; height: 14px; border-bottom: 1px solid var(--accent); border-right: 1px solid var(--accent); }
 
@@ -180,10 +180,16 @@
   .bullet .v { font-family: var(--display); font-weight: 300; font-size: clamp(15px, 2vh, 18px); letter-spacing: -0.01em; color: var(--ink); }
   .bullet .v em { font-style: italic; }
 
-  .form { display: flex; flex-direction: column; gap: clamp(10px, 1.6vh, 18px); }
+  .form { display: flex; flex-direction: column; gap: clamp(10px, 1.6vh, 18px); flex: 1 1 auto; min-height: 0; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 2.2vw, 26px); flex: 1 1 auto; min-height: 0; }
+  .form-col { display: flex; flex-direction: column; gap: clamp(10px, 1.6vh, 18px); min-height: 0; }
+  .form-col:last-child { justify-content: flex-start; }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.6vh, 18px); }
 
   .field { display: flex; flex-direction: column; gap: clamp(5px, 0.8vh, 8px); }
+  .brief-field { flex: 1 1 auto; min-height: 0; }
+  .brief-field .input-wrap { flex: 1 1 auto; min-height: 0; }
+  .brief-field textarea { height: 100%; }
   .field label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--ink-dim); display: flex; justify-content: space-between; align-items: center; }
   .field label .hint { color: var(--ink-faint); letter-spacing: 0.18em; }
 
@@ -258,6 +264,10 @@
     .ghost-logo { width: 520px; height: 520px; }
     .bullets { grid-template-columns: 1fr; }
     .grid-2 { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    body.book-page { height: auto; min-height: 100dvh; overflow: visible; }
+    .card { overflow: visible; max-height: none; }
+    main { min-height: 0; }
   }
   @media (max-width: 480px) {
     .shell { padding: 18px 20px; }
@@ -340,50 +350,56 @@
         </div>
 
         <form class="form" id="bookForm" novalidate>
-          <div class="section-label">Contact</div>
-          <div class="grid-2">
-            <div class="field"><label for="name"><span>Name</span></label><div class="input-wrap"><input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required /></div></div>
-            <div class="field"><label for="email"><span>Email</span></label><div class="input-wrap"><input id="email" name="email" type="email" placeholder="your@email.com" autocomplete="email" required /></div></div>
-          </div>
-          <div class="grid-2">
-            <div class="field"><label for="company"><span>Company</span><span class="hint">Optional</span></label><div class="input-wrap"><input id="company" name="company" type="text" placeholder="Company or project" autocomplete="organization" /></div></div>
-            <div class="field"><label for="need"><span>Looking for</span></label><div class="input-wrap"><select id="need" name="need" required>
-              <option value="" disabled selected>Select focus</option>
-              <option value="brand">Brand system</option>
-              <option value="web">Website or landing page</option>
-              <option value="ads">Ads &amp; campaigns</option>
-              <option value="content">Content engine</option>
-              <option value="video">Video &amp; motion</option>
-              <option value="other">Something else</option>
-            </select></div></div>
-          </div>
+          <div class="form-grid">
+            <div class="form-col">
+              <div class="section-label">Contact</div>
+              <div class="grid-2">
+                <div class="field"><label for="name"><span>Name</span></label><div class="input-wrap"><input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required /></div></div>
+                <div class="field"><label for="email"><span>Email</span></label><div class="input-wrap"><input id="email" name="email" type="email" placeholder="your@email.com" autocomplete="email" required /></div></div>
+              </div>
+              <div class="grid-2">
+                <div class="field"><label for="company"><span>Company</span><span class="hint">Optional</span></label><div class="input-wrap"><input id="company" name="company" type="text" placeholder="Company or project" autocomplete="organization" /></div></div>
+                <div class="field"><label for="need"><span>Looking for</span></label><div class="input-wrap"><select id="need" name="need" required>
+                  <option value="" disabled selected>Select focus</option>
+                  <option value="brand">Brand system</option>
+                  <option value="web">Website or landing page</option>
+                  <option value="ads">Ads &amp; campaigns</option>
+                  <option value="content">Content engine</option>
+                  <option value="video">Video &amp; motion</option>
+                  <option value="other">Something else</option>
+                </select></div></div>
+              </div>
 
-          <div class="section-label">Pick a slot</div>
-          <div class="field">
-            <label><span>Preferred time</span><span class="hint" id="tzHint">Your local time</span></label>
-            <div class="slot-grid" id="slotGrid" role="radiogroup" aria-label="Preferred time"></div>
+              <div class="section-label">Pick a slot</div>
+              <div class="field">
+                <label><span>Preferred time</span><span class="hint" id="tzHint">Your local time</span></label>
+                <div class="slot-grid" id="slotGrid" role="radiogroup" aria-label="Preferred time"></div>
+              </div>
+            </div>
+
+            <div class="form-col">
+              <div class="section-label">Brief</div>
+              <div class="field brief-field">
+                <label for="notes"><span>What do you need made?</span><span class="hint">Optional</span></label>
+                <div class="input-wrap"><textarea id="notes" name="notes" placeholder="A few lines on the project, timeline, or budget."></textarea></div>
+              </div>
+
+              <div class="row">
+                <label class="check">
+                  <input type="checkbox" id="consent" name="consent" required />
+                  <span class="box" aria-hidden="true"></span>
+                  <span>OK to email me call details</span>
+                </label>
+              </div>
+
+              <button type="submit" class="submit" id="submitBtn">
+                <span>Request intro call</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+
+              <div class="msg" id="statusMsg" role="status" aria-live="polite"></div>
+            </div>
           </div>
-
-          <div class="section-label">Brief</div>
-          <div class="field">
-            <label for="notes"><span>What do you need made?</span><span class="hint">Optional</span></label>
-            <div class="input-wrap"><textarea id="notes" name="notes" placeholder="A few lines on the project, timeline, or budget."></textarea></div>
-          </div>
-
-          <div class="row">
-            <label class="check">
-              <input type="checkbox" id="consent" name="consent" required />
-              <span class="box" aria-hidden="true"></span>
-              <span>OK to email me call details</span>
-            </label>
-          </div>
-
-          <button type="submit" class="submit" id="submitBtn">
-            <span>Request intro call</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-
-          <div class="msg" id="statusMsg" role="status" aria-live="polite"></div>
         </form>
 
         <div class="foot-note">Have an access code already? <a href="/">Sign up</a></div>
