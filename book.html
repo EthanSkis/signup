@@ -261,6 +261,16 @@
     footer.foot .right { justify-self: center; flex-wrap: wrap; justify-content: center; }
     .ghost-logo { width: 420px; height: 420px; }
   }
+  @media (max-height: 900px) {
+    .bullets { display: none; }
+    .input-wrap textarea { min-height: 64px; }
+  }
+  @media (max-height: 760px) {
+    .input-wrap textarea { min-height: 52px; }
+    .subtitle { margin-bottom: 14px; }
+    h1.title { font-size: clamp(28px, 4.4vh, 44px); }
+  }
+
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
 </style>
 </head>
@@ -403,12 +413,12 @@
     const slots = [];
     const now = new Date();
     let added = 0, offset = 0;
-    while (added < 8 && offset < 30) {
+    while (added < 6 && offset < 30) {
       const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset);
       const dow = d.getDay();
       if (dow !== 0 && dow !== 6) {
         for (const t of TIMES) {
-          if (added >= 8) break;
+          if (added >= 6) break;
           const dt = new Date(d.getFullYear(), d.getMonth(), d.getDate(), t.h, t.m);
           if (dt.getTime() <= now.getTime() + 60 * 60 * 1000) continue;
           slots.push({ iso: dt.toISOString(), day: DAY_LABELS[dow], date: `${dt.getMonth()+1}/${dt.getDate()}`, time: formatTime(t.h, t.m) });
